@@ -212,6 +212,14 @@ config.ini
 secrets.json
 .env.local
 .env.production
+keys_mapping.md
+
+# Local env training orchestration
+.environment_server_urls.txt
+eval_results/
+outputs/
+secure_checkpoints/
+training_logs/
 
 # Large files
 *.zip

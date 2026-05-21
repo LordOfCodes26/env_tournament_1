@@ -63,6 +63,12 @@ from envs.liar_dice_env import (
     rollout_reward_func                                        as _liar_reward,
     _curriculum_factory                                        as _liar_curriculum,
 )
+from envs.liar_dice_opponent_modeling import (
+    rollout_full_prompt_and_completion_parallelized_curriculum as _liar_opp_rollout_full,
+    rollout_last_prompt_and_completion_parallelized_curriculum as _liar_opp_rollout_last,
+    rollout_reward_func                                        as _liar_opp_reward,
+    _curriculum_factory                                        as _liar_opp_curriculum,
+)
 
 
 @dataclass
@@ -177,6 +183,21 @@ _REGISTRY: dict[str, EnvTrainingConfig] = {
             "6_9_b": SizeHyperparams(per_device_train_batch_size=4, gradient_accumulation_steps=4, num_generations=4, vllm_gpu_memory_utilization=0.35, beta=0.01),
         }),
     ),
+    "liars_dice_opponent_modeling": EnvTrainingConfig(
+        rollout_full=_liar_opp_rollout_full,
+        rollout_last=_liar_opp_rollout_last,
+        reward_func=_liar_opp_reward,
+        curriculum_factory=_liar_opp_curriculum,
+        reasoning=ModeConfig(rollouts_per_stage=1024, initial_max_turn=1, num_generations=4, temperature=2.0, top_k=5),
+        no_mask=ModeConfig(rollouts_per_stage=1280, initial_max_turn=1, num_generations=4, temperature=2.0, top_k=5, per_size={
+            "2_4_b": SizeHyperparams(per_device_train_batch_size=4, gradient_accumulation_steps=4, num_generations=4, vllm_gpu_memory_utilization=0.3,  beta=0.01),
+            "6_9_b": SizeHyperparams(per_device_train_batch_size=4, gradient_accumulation_steps=4, num_generations=4, vllm_gpu_memory_utilization=0.35, beta=0.01),
+        }),
+        full_prompt=ModeConfig(rollouts_per_stage=1024, initial_max_turn=2, num_generations=4, temperature=2.0, top_k=5, per_size={
+            "2_4_b": SizeHyperparams(per_device_train_batch_size=4, gradient_accumulation_steps=4, num_generations=4, vllm_gpu_memory_utilization=0.3,  beta=0.01),
+            "6_9_b": SizeHyperparams(per_device_train_batch_size=4, gradient_accumulation_steps=4, num_generations=4, vllm_gpu_memory_utilization=0.35, beta=0.01),
+        }),
+    ),
     "leduc_poker": EnvTrainingConfig(
         rollout_full=_leduc_rollout_full,
         rollout_last=_leduc_rollout_last,
@@ -217,9 +238,13 @@ _REGISTRY: dict[str, EnvTrainingConfig] = {
 # ---------------------------------------------------------------------------
 
 # Change this to select a non-default variant for a base environment name.
+# Defaults: May-18 winner hyperparams + liar's dice opponent modeling (May-11 proven).
+# Uncomment gin/leduc lines to switch variants without changing task environment_name.
 _VARIANT_OVERRIDES: dict[str, str] = {
+    "liars_dice": "liars_dice_opponent_modeling",
     # "gin_rummy": "gin_rummy_opponent_modeling",
     # "gin_rummy": "gin_rummy_refined",
+    # "gin_rummy": "gin_rummy_mmd",
     # "leduc_poker": "leduc_poker_opponent_modeling",
 }
 
