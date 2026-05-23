@@ -37,15 +37,15 @@ TASK_ID="1"
 
 # List of models to test (add or remove models as needed)
 MODELS=(
-  "unsloth/Llama-3.2-3B-Instruct"
-  "Qwen/Qwen3-4B-Instruct-2507"
+  # "unsloth/Llama-3.2-3B-Instruct"
+  # "Qwen/Qwen3-4B-Instruct-2507"
   "mistralai/Mistral-7B-Instruct-v0.3"
-  "mistralai/Mistral-7B-Instruct-v0.2"
-  "Qwen/Qwen2.5-3B-Instruct"
-  "Qwen/Qwen2.5-7B-Instruct"
-  "Qwen/Qwen2-7B-Instruct"
-  "codellama/CodeLlama-7b-Instruct-hf"
-  "NousResearch/Hermes-3-Llama-3.2-3B"
+  # "mistralai/Mistral-7B-Instruct-v0.2"
+  # "Qwen/Qwen2.5-3B-Instruct"
+  # "Qwen/Qwen2.5-7B-Instruct"
+  # "Qwen/Qwen2-7B-Instruct"
+  # "codellama/CodeLlama-7b-Instruct-hf"
+  # "NousResearch/Hermes-3-Llama-3.2-3B"
 )
 
 DATASET="https://huggingface.co/datasets/TuringEnterprises/Turing-Open-Reasoning/resolve/main/Computational_STEM_QA_Dataset.json?download=true"
